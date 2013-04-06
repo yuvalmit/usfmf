@@ -1,33 +1,38 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
-<style>
-body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  width: 960px;
-  height: 500px;
-  position: relative;
-  background-color: red;
-}
-</style>
 
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script>
+<head>
+  <meta charset="utf-8">  
+  <style>
+    body {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      width: 960px;
+      height: 500px;
+      position: relative;
+      background-color: red;
+    }
+  </style>
+</head>
 
-var margin = {top: 20, right: 20, bottom: 30, left: 50},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
-
-var svg = d3.select("body").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-d3.csv("flights.csv", function(error, data) {
-  console.log("flights loaded!");
-  svg.append("circle")
-    .attr("cx", 100)
-    .attr("cy", 100)
-    .attr("r", 20);
-});
-</script>
+<body>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script>
+    
+    var margin = {top: 20, right: 20, bottom: 30, left: 50},
+        width = 960 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
+    
+    var svg = d3.select("body").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    
+    d3.csv("flights.csv", function(error, data) {
+      console.log("flights loaded!");
+      svg.append("circle")
+        .attr("cx", 100)
+        .attr("cy", 100)
+        .attr("r", 20);
+    });
+  </script>
+</body>
