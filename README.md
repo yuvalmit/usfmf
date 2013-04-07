@@ -1,1 +1,1 @@
-US Foreign Military Aid in US$, adjusted for inflation
+US Foreign Military Aid in US$, adjusted for inflation.

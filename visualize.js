@@ -10,6 +10,7 @@ var svg = d3.select("body").append("svg")
 
 d3.csv("data.csv", function(error, data) {
   console.log("data loaded!");
+  // Dummy operation to show that d3 is working.
   svg.append("circle")
     .attr("cx", 100)
     .attr("cy", 100)
