@@ -17,7 +17,7 @@ var svg = d3.select("body").append("svg")
 
 var x = d3.scale.log()
         .clamp(true)
-        .domain([0.1, funding_max])
+        .domain([100000, funding_max])
         .range([0, width])
         .nice();
 
@@ -58,7 +58,10 @@ d3.json("data.json", function(error, data) {
     .attr("x2", width)
     .attr("y1", 0)
     .attr("y2", 0)
-    .style("stroke", "#ddd");
+    .style("stroke", "black")
+    .style("stroke-opacity", 0.1)
+    .style("stroke-width", 1)
+    .style("z-index", -999);
 
   // Draw the country name
   countries.append("text")
