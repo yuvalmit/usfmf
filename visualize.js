@@ -15,9 +15,11 @@ var svg = d3.select("body").append("svg")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-var x = d3.scale.linear()
-        .domain([0, funding_max])
-        .range([0, width]);
+var x = d3.scale.log()
+        .clamp(true)
+        .domain([0.1, funding_max])
+        .range([0, width])
+        .nice();
 
 var r = d3.scale.linear()
         .domain([0, population_max])
@@ -27,26 +29,41 @@ var xAxis = d3.svg.axis()
         .scale(x)
         .orient("bottom");
 
+// Load the data and do stuff with it
 d3.json("data.json", function(error, data) {
   console.log("data loaded!");
 
-  // svg.append("g")
-  //     .attr("class", "x axis")
-  //     .call(xAxis);
+  svg.append("g")
+      .attr("class", "x axis")
+      .call(xAxis);
 
+  // Perform the data join
   var countries = svg.selectAll(".country")
     .data(data)
     .enter().append("g")
     .attr("class", "country")
     .attr("transform", function(d, i) { return "translate(0, " + i * y + ")"; });
 
-  countries.append("text")
-    .style("text-anchor", "left")
-    .text(function(d) { return d.name; });
+  // Draw a line between each country
+  countries.append("line")
+    .attr("x1", 0)
+    .attr("x2", width)
+    .attr("y1", 0)
+    .attr("y2", 0)
+    .style("stroke", "#ddd");
 
+  // Draw the country name
+  countries.append("text")
+    .style("text-anchor", "center")
+    .text(function(d) { return d.name; })
+    .attr("transform", function(d) { return "translate(" + x(d.annual_aid[61]) + ", 0)"; } );
+
+  // Draw the circles
   countries.append("circle")
     .attr("cy", -y/4)
     .attr("cx", function(d) { return x(d.annual_aid[61]); })
     .attr("r", function(d) { return r(d.population[61]); });
+
+
 
 });
