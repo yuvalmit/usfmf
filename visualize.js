@@ -5,6 +5,7 @@ var margin = {top: 20, right: 20, bottom: 30, left: 50},
 
 var funding_max = 13648194056,
     population_max = 1347565324,
+    bubble_min_radius = 10;
     bubble_max_radius = 100;
 
 var svg = d3.select("body").append("svg")
@@ -20,7 +21,7 @@ var x = d3.scale.linear()
 
 var r = d3.scale.linear()
         .domain([0, population_max])
-        .range([10, bubble_max_radius]);
+        .range([bubble_min_radius, bubble_max_radius]);
 
 var xAxis = d3.svg.axis()
         .scale(x)
