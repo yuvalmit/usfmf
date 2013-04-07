@@ -1,6 +1,6 @@
-var margin = {top: 20, right: 20, bottom: 30, left: 50},
+var margin = {top: 20, right: 50, bottom: 30, left: 50},
         width = 960 - margin.left - margin.right,
-        height = 4550 - margin.top - margin.bottom,
+        height = 4600 - margin.top - margin.bottom,
         y = 25; // bar height
 
 var funding_max = 13648194056,
@@ -21,13 +21,21 @@ var x = d3.scale.log()
         .range([0, width])
         .nice();
 
+
 var r = d3.scale.linear()
         .domain([0, population_max])
         .range([bubble_min_radius, bubble_max_radius]);
 
 var xAxis = d3.svg.axis()
         .scale(x)
-        .orient("bottom");
+        .orient("top")
+        .ticks(10, function(d,i) {
+          frac = (d / 1000000);
+          if (frac >= 0.01)
+            return "$" + frac + "M";
+          else
+            return "$0";
+        });
 
 // Load the data and do stuff with it
 d3.json("data.json", function(error, data) {
@@ -42,7 +50,7 @@ d3.json("data.json", function(error, data) {
     .data(data)
     .enter().append("g")
     .attr("class", "country")
-    .attr("transform", function(d, i) { return "translate(0, " + i * y + ")"; });
+    .attr("transform", function(d, i) { return "translate(0, " + ((i * y) + 50) + ")"; });
 
   // Draw a line between each country
   countries.append("line")
