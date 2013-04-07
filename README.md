@@ -1,1 +1,1 @@
-Flight data from various Israeli airports
+US Foreign Military Aid in US$, adjusted for inflation
