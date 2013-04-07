@@ -1,4 +1,4 @@
 # Shenkar IxDP • Spring 2013
-## Assignment #2: Data Visualization.
+## Assignment #2: Data Visualization of US Foreign Military Funding
 
-This terrible visualization depicts US Foreign Military Aid in US$, (adjusted for inflation) versus population size for 180 countries, 1950-2011.
+This terrible visualization depicts foreign military aid given by the United States to 180 countries in 2011. The X axis is the amount of money given, in US$ (adjusted for inflation), bubble size is the country population.
