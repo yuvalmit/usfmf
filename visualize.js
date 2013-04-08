@@ -1,8 +1,13 @@
+// Standard margins around the content
+// see http://bl.ocks.org/mbostock/3019563
 var margin = {top: 20, right: 50, bottom: 30, left: 50},
         width = 960 - margin.left - margin.right,
-        height = 4600 - margin.top - margin.bottom,
-        y = 25; // bar height
+        height = 4600 - margin.top - margin.bottom;
 
+// row height
+var y = 25; // bar height
+
+// some constants
 var funding_max = 13648194056,
     population_max = 1347565324,
     bubble_min_radius = 10;
@@ -67,14 +72,29 @@ d3.json("data.json", function(error, data) {
   countries.append("text")
     .style("text-anchor", "center")
     .text(function(d) { return d.name; })
-    .attr("transform", function(d) { return "translate(" + x(d.annual_aid[61]) + ", 0)"; } );
+    .attr("transform", function(d) {
+      return "translate(" + (x(d.annual_aid[61]) + 5) + ", " + -(y/4) + ")"; } );
 
-  // Draw the circles
+  // Draw the large, semitransparent circles
+  // Note that the styling happens in CSS!
   countries.append("circle")
-    .attr("cy", -y/4)
-    .attr("cx", function(d) { return x(d.annual_aid[61]); })
-    .attr("r", function(d) { return r(d.population[61]); });
+    .attr("cy", -y/2)
+    .attr("cx", function(d) {
+      // x position according to the x scale
+      return x(d.annual_aid[61]); })
+    .attr("r", function(d) {
+      // radius according the r scale
+      return r(d.population[61]); });
 
-
-
+  // Draw small dots in the center of the bubble
+  // Note that the styling happens right here!
+  // These styles are applied as a style attribute on the
+  // DOM nodes.
+  countries.append("circle")
+    .attr("cy", -y/2)
+    .attr("cx", function(d) {
+      // x position according to the x scale
+      return x(d.annual_aid[61]); })
+    .attr("r", 2) // fixed radius of 2px
+    .style("fill", "black");
 });
