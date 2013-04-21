@@ -1,17 +1,19 @@
 // Standard margins around the content
 // see http://bl.ocks.org/mbostock/3019563
-var margin = {top: 20, right: 50, bottom: 30, left: 50},
+var margin = {top: 50, right: 50, bottom: 30, left: 50},
         width = 960 - margin.left - margin.right,
         height = 4600 - margin.top - margin.bottom;
 
 // row height
-var y = 25; // bar height
+var y = 50; // bar height
 
 // some constants
-var funding_max = 13648194056,
-    population_max = 1347565324,
-    bubble_min_radius = 10;
-    bubble_max_radius = 100;
+var driver_max = 47795,
+    driver_min = 25264,
+    accident_max = 25491,
+    accident_min = 15497,
+    ratio_min = 52,
+    ratio_max = 61;
 
 // get and append an svg element inside the document body
 // and immediately add a group, translate it to create
@@ -33,33 +35,28 @@ var svg = d3.select("body").append("svg")
 // Lower bound of 100000 manually chosen for prettyness.
 // If the country received < $100k funding, it's pretty
 // much like zero.
-var x = d3.scale.log()
-        .clamp(true)
-        .domain([100000, funding_max])
-        .range([0, width])
-        .nice();
+var x = d3.scale.linear()
+        .domain([driver_min-3000, driver_max+1000])
+        .range([0, width]);
+
 
 // Linear mapping of population onto bubble radius
-var r = d3.scale.linear()
-        .domain([0, population_max])
-        .range([bubble_min_radius, bubble_max_radius]);
 
+
+
+var col = d3.scale.linear()
+          .domain([ratio_min,ratio_max])
+          .range(["green","red"]);
 // Generate the axis markers
 // Tickmarks are in $millions
 // Below $0.01 million, show $0.
 var xAxis = d3.svg.axis()
         .scale(x)
-        .orient("top")
-        .ticks(10, function(d,i) {
-          frac = (d / 1000000);
-          if (frac >= 0.01)
-            return "$" + frac + "M";
-          else
-            return "$0";
-        });
+        .orient("top");
+
 
 // Load the data and render it
-d3.json("data.json", function(error, data) {
+d3.json("data2.json", function(error, data) {
   console.log("data loaded!");
 
   // Draw the X axis near the top
@@ -98,20 +95,23 @@ d3.json("data.json", function(error, data) {
   // shifted up by y/4 so it's centered in the row.
   countries.append("text")
     .style("text-anchor", "center")
-    .text(function(d) { return d.name; })
-    .attr("transform", function(d) {
-      return "translate(" + (x(d.annual_aid[61]) + 5) + ", " + -(y/4) + ")"; } );
+    .text(function(d) { return d.year; });
+    
 
   // Draw the large, semitransparent circles
   // Note that the styling happens in CSS!
   countries.append("circle")
     .attr("cy", -y/2)
-    .attr("cx", function(d) {
+    .attr("cx", function(d) 
+    {
       // x position according to the x scale
-      return x(d.annual_aid[61]); })
-    .attr("r", function(d) {
-      // radius according the r scale
-      return r(d.population[61]); });
+      return x(d.numofdrivers); 
+    })
+    .attr("r", 30)
+    .style("fill",function(d)
+    {
+      return col(d.accident/d.numofdrivers*100);
+    });
 
   // Draw small dots in the center of the bubble
   // Note that the styling happens right here!
@@ -121,7 +121,7 @@ d3.json("data.json", function(error, data) {
     .attr("cy", -y/2)
     .attr("cx", function(d) {
       // x position according to the x scale
-      return x(d.annual_aid[61]); })
+      return x(d.numofdrivers); })
     .attr("r", 2) // fixed radius of 2px
-    .style("fill", "black");
+    .style("fill", "green");
 });
